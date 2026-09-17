@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Мессенджер</title>
+<meta name="theme-color" content="#0e1621">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Мессенджер">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== AUTH ===== -->
+<div id="auth" class="auth-wrap">
+  <div class="auth-card">
+    <h1>💬 Мессенджер</h1>
+    <div class="tabs">
+      <button id="tabLogin" class="tab active">Вход</button>
+      <button id="tabReg" class="tab">Регистрация</button>
+    </div>
+    <div id="regNameWrap" style="display:none">
+      <input id="regName" placeholder="Ваше имя">
+      <input id="regUsername" placeholder="@username (необязательно)">
+    </div>
+    <input id="phone" placeholder="+79001234567" inputmode="tel">
+    <input id="password" type="password" placeholder="Пароль (мин. 6 символов)">
+    <button id="authBtn" class="btn-primary">Войти</button>
+    <div id="authErr" class="err"></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" class="app" style="display:none">
+  <aside class="sidebar">
+    <div class="me">
+      <div class="me-left">
+        <div class="avatar" id="meAvatar">
+          <span id="meAvatarLetter"></span>
+          <div class="avatar-overlay">📷</div>
+        </div>
+        <div class="me-info"><b id="meName"></b><span id="meUsername"></span><span id="mePhone"></span></div>
+      </div>
+      <div class="me-btns">
+        <button id="settingsBtn" title="Настройки и конфиденциальность">⚙️</button>
+        <button id="logoutBtn" title="Выйти">⏻</button>
+      </div>
+    </div>
+    <input type="file" id="avatarInput" accept="image/*" hidden>
+    <div class="side-actions">
+      <button id="newGroupBtn" class="btn-small">＋ Группа</button>
+      <button id="newChatBtn" class="btn-small">＋ Личный чат</button>
+    </div>
+    <div id="chatList" class="chat-list"></div>
+  </aside>
+
+  <main class="chat">
+    <div id="chatHeader" class="chat-header">
+    <div class="ch-main"><span id="chatHeaderText" class="muted">Выберите чат</span><div id="chatHeaderStatus" class="ch-status"></div></div>
+    <div id="chatHeaderBtns"></div>
+  </div>
+    <div id="messages" class="messages"></div>
+    <div id="typing" class="typing"></div>
+    <div class="composer">
+      <input type="file" id="fileInput" accept="image/*,video/*" hidden>
+      <button id="attachBtn" title="Фото / видео (без сжатия)">📎</button>
+      <button id="voiceBtn" title="Голосовое сообщение">🎤</button>
+      <input id="msgInput" placeholder="Сообщение…" autocomplete="off">
+      <button id="sendBtn" class="btn-primary">➤</button>
+    </div>
+    <div id="connBar" class="conn-bar" style="display:none">Подключение…</div>
+  </main>
+</div>
+
+<!-- ===== MODAL: new chat / group ===== -->
+<div id="modal" class="modal" style="display:none">
+  <div class="modal-card">
+    <h3 id="modalTitle"></h3>
+    <input id="groupName" placeholder="Название группы" style="display:none">
+    <input id="userSearch" placeholder="🔍 Поиск: @username, имя или телефон">
+    <div id="userPicker" class="user-picker"></div>
+    <div class="modal-btns">
+      <button id="modalCancel">Отмена</button>
+      <button id="modalOk" class="btn-primary">Создать</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: settings & privacy ===== -->
+<div id="settingsModal" class="modal" style="display:none">
+  <div class="modal-card">
+    <h3>Настройки и конфиденциальность</h3>
+    <label class="lbl">Имя</label>
+    <input id="setName">
+    <label class="lbl">Юзернейм</label>
+    <input id="setUsername" placeholder="@username">
+    <div class="priv-row">
+      <div><b>Показывать номер телефона</b><br><span class="muted-sm">Кто видит ваш номер в профиле</span></div>
+      <select id="setShowPhone">
+        <option value="all">Все</option>
+        <option value="nobody">Никто</option>
+      </select>
+    </div>
+    <div class="priv-row">
+      <div><b>Показывать юзернейм</b><br><span class="muted-sm">Поиск вас по @username</span></div>
+      <input type="checkbox" id="setShowUsername" checked>
+    </div>
+    <div id="setErr" class="err"></div>
+    <div class="modal-btns">
+      <button id="settingsCancel">Закрыть</button>
+      <button id="settingsSave" class="btn-primary">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
